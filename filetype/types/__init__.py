@@ -60,6 +60,7 @@ AUDIO = (
     audio.Wav(),
     audio.Amr(),
     audio.Aiff(),
+    audio.Caf(),
 )
 
 # Supported font types

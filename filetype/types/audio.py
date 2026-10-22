@@ -219,3 +219,20 @@ class Aiff(Type):
                 buf[9] == 0x49 and
                 buf[10] == 0x46 and
                 buf[11] == 0x46)
+
+
+class Caf(Type):
+    """
+    Implements the Core Audio Format audio type matcher.
+    """
+    MIME = 'audio/x-caf'
+    EXTENSION = 'caf'
+
+    def __init__(self):
+        super(Caf, self).__init__(
+            mime=Caf.MIME,
+            extension=Caf.EXTENSION
+        )
+
+    def match(self, buf):
+        return len(buf) >= 8 and buf[:6] == b'caff\x00\x01'
