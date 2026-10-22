@@ -667,22 +667,21 @@ class Zstd(Type):
         # Zstandard frames and Skippable frames.
         # See more details from
         # https://tools.ietf.org/id/draft-kucherawy-dispatch-zstd-00.html#rfc.section.2
-        is_zstd = (
-            len(buf) > 3 and
-            buf[0] in (0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28) and
-            buf[1] == 0xb5 and
-            buf[2] == 0x2f and
-            buf[3] == 0xfd)
-        if is_zstd:
-            return True
-        # skippable frames
-        if len(buf) < 8:
-            return False
-        magic = self._to_little_endian_int(buf[:4]) & Zstd.MAGIC_SKIPPABLE_MASK
-        if magic == Zstd.MAGIC_SKIPPABLE_START:
-            user_data_len = self._to_little_endian_int(buf[4:8])
-            if len(buf) < 8 + user_data_len:
+        offset = 0
+        while len(buf) - offset > 3:
+            is_zstd = (
+                buf[offset] in (0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28) and
+                buf[offset + 1] == 0xb5 and
+                buf[offset + 2] == 0x2f and
+                buf[offset + 3] == 0xfd)
+            if is_zstd:
+                return True
+            # skippable frames
+            if len(buf) - offset < 8:
                 return False
-            next_frame = buf[8 + user_data_len:]
-            return self.match(next_frame)
+            magic = self._to_little_endian_int(buf[offset:offset + 4])
+            if magic & Zstd.MAGIC_SKIPPABLE_MASK != Zstd.MAGIC_SKIPPABLE_START:
+                return False
+            user_data_len = self._to_little_endian_int(buf[offset + 4:offset + 8])
+            offset += 8 + user_data_len
         return False
