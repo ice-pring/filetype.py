@@ -89,8 +89,7 @@ class Ttf(Type):
                 buf[0] == 0x00 and
                 buf[1] == 0x01 and
                 buf[2] == 0x00 and
-                buf[3] == 0x00 and
-                buf[4] == 0x00)
+                buf[3] == 0x00)
 
 
 class Otf(Type):
@@ -111,5 +110,4 @@ class Otf(Type):
                 buf[0] == 0x4F and
                 buf[1] == 0x54 and
                 buf[2] == 0x54 and
-                buf[3] == 0x4F and
-                buf[4] == 0x00)
+                buf[3] == 0x4F)
