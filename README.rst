@@ -105,7 +105,7 @@ Audio
 -  **m4a** - ``audio/mp4``
 -  **ogg** - ``audio/ogg``
 -  **flac** - ``audio/x-flac``
--  **wav** - ``audio/x-wav``
+-  **wav** - ``audio/x-wav`` (RIFF, RIFX and RF64)
 -  **amr** - ``audio/amr``
 -  **aiff** - ``audio/x-aiff``
 
