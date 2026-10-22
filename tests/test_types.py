@@ -6,6 +6,7 @@ import os
 import unittest
 
 import filetype
+from filetype.types.audio import Aac
 
 # Absolute path to fixtures directory
 FIXTURES = os.path.dirname(os.path.abspath(__file__)) + '/fixtures'
@@ -67,6 +68,28 @@ class TestFileType(unittest.TestCase):
         self.assertTrue(kind is not None)
         self.assertEqual(kind.mime, 'audio/mp4')
         self.assertEqual(kind.extension, 'm4a')
+
+    def test_guess_aac_with_crc(self):
+        for header in (b'\xff\xf0', b'\xff\xf8'):
+            kind = filetype.guess(header)
+            self.assertIsNotNone(kind)
+            self.assertEqual(kind.mime, 'audio/aac')
+            self.assertEqual(kind.extension, 'aac')
+
+    def test_guess_aac_without_crc(self):
+        for header in (b'\xff\xf1', b'\xff\xf9'):
+            kind = filetype.guess(header)
+            self.assertIsNotNone(kind)
+            self.assertEqual(kind.mime, 'audio/aac')
+            self.assertEqual(kind.extension, 'aac')
+
+    def test_aac_rejects_invalid_headers(self):
+        matcher = Aac()
+        for header in (b'', b'\xff', b'\xfe\xf0', b'\xff\xe0',
+                       b'\xff\xf2', b'\xff\xf3', b'\xff\xf4',
+                       b'\xff\xf6', b'\xff\xfa', b'\xff\xfb',
+                       b'\xff\xfc', b'\xff\xfe'):
+            self.assertFalse(matcher.match(bytearray(header)))
 
     def test_guess_mp4(self):
         kind = filetype.guess(FIXTURES + '/sample.mp4')

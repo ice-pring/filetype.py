@@ -192,8 +192,9 @@ class Aac(Type):
         )
 
     def match(self, buf):
-        return (buf[:2] == bytearray([0xff, 0xf1]) or
-                buf[:2] == bytearray([0xff, 0xf9]))
+        # ADTS syncword and layer bits; MPEG ID and CRC presence may vary.
+        return (len(buf) > 1 and buf[0] == 0xff and
+                (buf[1] & 0xf6) == 0xf0)
 
 
 class Aiff(Type):
