@@ -54,12 +54,7 @@ class Zip(Type):
         )
 
     def match(self, buf):
-        return (len(buf) > 3 and
-                buf[0] == 0x50 and buf[1] == 0x4B and
-                (buf[2] == 0x3 or buf[2] == 0x5 or
-                    buf[2] == 0x7) and
-                (buf[3] == 0x4 or buf[3] == 0x6 or
-                    buf[3] == 0x8))
+        return buf[:4] in (b'PK\x03\x04', b'PK\x05\x06', b'PK\x07\x08')
 
 
 class Tar(Type):
@@ -414,11 +409,7 @@ class Sqlite(Type):
         )
 
     def match(self, buf):
-        return (len(buf) > 3 and
-                buf[0] == 0x53 and
-                buf[1] == 0x51 and
-                buf[2] == 0x4C and
-                buf[3] == 0x69)
+        return buf[:16] == b'SQLite format 3\x00'
 
 
 class Deb(Type):
