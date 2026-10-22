@@ -107,8 +107,8 @@ Audio
 -  **flac** - ``audio/x-flac``
 -  **wav** - ``audio/x-wav``
 -  **amr** - ``audio/amr``
--  **aiff** - ``audio/x-aiff``
 -  **caf** - ``audio/x-caf``
+-  **aiff** - ``audio/x-aiff``
 
 Archive
 ^^^^^^^
