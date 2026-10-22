@@ -219,3 +219,20 @@ class Aiff(Type):
                 buf[9] == 0x49 and
                 buf[10] == 0x46 and
                 buf[11] == 0x46)
+
+
+class Aifc(Type):
+    """
+    Implements the AIFF-C audio type matcher.
+    """
+    MIME = 'audio/x-aiff'
+    EXTENSION = 'aifc'
+
+    def __init__(self):
+        super(Aifc, self).__init__(
+            mime=Aifc.MIME,
+            extension=Aifc.EXTENSION
+        )
+
+    def match(self, buf):
+        return buf[:4] == b'FORM' and buf[8:12] == b'AIFC'

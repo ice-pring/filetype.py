@@ -108,6 +108,7 @@ Audio
 -  **wav** - ``audio/x-wav``
 -  **amr** - ``audio/amr``
 -  **aiff** - ``audio/x-aiff``
+-  **aifc** - ``audio/x-aiff``
 
 Archive
 ^^^^^^^
